@@ -32,7 +32,30 @@
               <div>
                 <ul class="movie-list">
                   <li v-for="(movie, index) in this.movieList" :key="index">
-                    {{movie.name}} - {{movie.director}} - {{movie.actor}}
+                    <table>
+                      <tr>
+                        <th class="short">电影名</th>
+                        <th class="short">类型</th>
+                        <th class="short">导演</th>
+                        <th class="short">上映日期</th>
+                        <th class="short">票房</th>
+                        <th class="short">评分</th>
+                      </tr>
+                      <tr>
+                        <td class="short">{{movie.name}}</td>
+                        <td class="short">{{movie.type}}</td>
+                        <td class="short">{{movie.director}}</td>
+                        <td class="short">{{movie.date}}</td>
+                        <td class="short">{{movie.boxoffice}}万</td>
+                        <td class="short">{{movie.score}}</td>
+                      </tr>
+                    </table>
+                    <table>
+                      <tr>
+                        <th class="short">主演</th>
+                        <td class="long">{{movie.actor}}</td>
+                      </tr>
+                    </table>
                   </li>
                 </ul>
               </div>
@@ -77,37 +100,11 @@ export default {
         {value: 'actor', label: '演员'}
       ],
       movie: {},
-      movieInfo: [
-        {
-          'name': '肖申克的救赎',
-          'director': '弗兰克·德拉邦特',
-          'actor': '蒂姆·罗宾斯'
-        },
-        {
-          'name': '霸王别姬',
-          'director': '陈凯歌',
-          'actor': '张国荣'
-        },
-        {
-          'name': '这个杀手不太冷',
-          'director': '吕克·贝松',
-          'actor': '让·雷诺'
-        }
-      ],
-      movieList: [],
-      searchResult: []
+      movieList: []
     }
   },
   methods: {
     startSearch: function () {
-      var option = this.searchOption
-      var target = this.searchObject
-      var index
-      for (index in this.movieInfo) {
-        if (target === this.movieInfo[index][option]) {
-          this.movieList.push(this.movieInfo[index])
-        }
-      }
       var searchRequest = {
         a: 1,
         film: '0',
@@ -121,14 +118,17 @@ export default {
       } else {
         searchRequest.actor = this.searchObject
       }
+      var result = []
       var postData = this.$qs.stringify(searchRequest)
       this.axios.post('movie/', postData).then(function (response) {
         console.log(response.data)
-        this.searchResult = response.data
-        console.log(this.searchResult[0])
+        for (var item in response.data) {
+          result.push(response.data[item])
+        }
       }).catch(function (error) {
         console.log(error)
       })
+      this.movieList = result
     },
     toMainPage: function () {
       this.$router.push({path: '/main'})
@@ -193,6 +193,12 @@ h4, h5{
   margin-right: 70px;
   width: 550px;
   height: 200px;
-  line-height: 25px
+  line-height: 25px;
+}
+.short {
+  width: 80px;
+}
+.long {
+  width: 600px;
 }
 </style>
