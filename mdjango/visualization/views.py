@@ -9,10 +9,10 @@ class VisualizationChart:
         self.data_name = data_name
         self.x_axis = x_axis
         self.y_axis = y_axis
-        self.chart_name = './frontend/src/diagrams/' + chart_name
+        self.chart_name = './visualization/diagrams/' + chart_name
 
     def histogram(self):
-        bar = pyecharts.Bar(self.title)
+        bar = pyecharts.Bar(self.title, width=300, height=250)
         if '电影票房TOP' in self.title:
             bar.add("", self.x_axis, self.y_axis, xaxis_interval=0, xaxis_rotate=20)
         else:
@@ -21,20 +21,20 @@ class VisualizationChart:
         bar.render(path=save_file_name)
 
     def line(self):
-        line = pyecharts.Line(self.title)
+        line = pyecharts.Line(self.title, width=300, height=250)
         for (name, y) in zip(self.data_name, self.y_axis):
             line.add(name, self.x_axis, y)
         save_file_name = self.chart_name + '_line.png'
         line.render(path=save_file_name)
 
     def pie(self):
-        pie = pyecharts.Pie(self.title, title_pos='center')
+        pie = pyecharts.Pie(self.title, title_pos='center', width=300, height=250)
         pie.add("", self.x_axis, self.y_axis, legend_orient="vertical", legend_pos="left")
         save_file_name = self.chart_name + '_pie.png'
         pie.render(path=save_file_name)
 
     def word_cloud(self):
-        wordcloud = pyecharts.WordCloud(self.title)
+        wordcloud = pyecharts.WordCloud(self.title, width=300, height=250)
         wordcloud.add("", self.x_axis, self.y_axis, shape='diamond')
         save_file_name = self.chart_name + '_wordcloud.png'
         wordcloud.render(path=save_file_name)

@@ -52,7 +52,7 @@
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
               <div v-show="show">
-                <img src="../diagrams/boxoffice_ratio_bar.png" alt="boxoffice_ratio_bar" />
+                <img src="./visualization/diagrams/boxoffice_ratio_bar.png" alt="boxoffice_ratio_bar" />
               </div>
             </el-tab-pane>
           </el-tabs>
