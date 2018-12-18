@@ -51,9 +51,9 @@
           <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
-              <div v-show="show">
-                <img src="./visualization/diagrams/boxoffice_ratio_bar.png" alt="boxoffice_ratio_bar" />
-              </div>
+              <!-- <div v-show="show"> -->
+                <!-- <img src="frontend/dist/diagrams/boxoffice_ratio_bar.png" alt="boxoffice_ratio_bar" /> -->
+              <!-- </div> -->
             </el-tab-pane>
           </el-tabs>
         </div>

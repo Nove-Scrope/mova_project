@@ -121,7 +121,7 @@ export default {
       var result = []
       var postData = this.$qs.stringify(searchRequest)
       this.axios.post('movie/', postData).then(function (response) {
-        console.log(response.data)
+        // console.log(response.data)
         for (var item in response.data) {
           result.push(response.data[item])
         }

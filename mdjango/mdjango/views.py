@@ -75,11 +75,11 @@ def movie(request):
                 return HttpResponse(dic)
             elif int(a) == 2:
                 #visualization
-                func_selected = request.POST.get('func_selected', 0)
-                year = request.POST.get('year', 0)
-                quarter = request.POST.get('quarter', 0)
-                month = request.POST.get('month', 0)
-                top_x = request.POST.get('top_x', 0)
+                func_selected = str(request.POST.get('func_selected', 0))
+                year = str(request.POST.get('year', 0))
+                quarter = str(request.POST.get('quarter', 0))
+                month = str(request.POST.get('month', 0))
+                top_x = int(request.POST.get('top_x', 0))
                 info = data_visualization(func_selected, year, quarter, month, top_x)
                 return HttpResponse(info)
             elif int(a) == 3:
