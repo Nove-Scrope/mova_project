@@ -56,6 +56,23 @@ export default {
           },
           showClose: false
         })
+      } else {
+        var crawlRequest = {
+          a: 4,
+          start: '1'
+        }
+        var postData = this.$qs.stringify(crawlRequest)
+        this.axios.post('movie/', postData).then(function (response) {
+          console.log(response.data)
+        }).catch(function (error) {
+          console.log(error)
+        })
+        if (response.data === '爬取失败:-(') {
+          this.$message({type:'error', message: '数据更新失败！'})
+        }
+        else {
+          this.$message({type:'success', message: '数据更新成功！'})
+        }
       }
     },
     toMainPage: function () {

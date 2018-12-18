@@ -39,7 +39,6 @@
         <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
-              <img src="../diagrams/pie.svg"/>
             </el-tab-pane>
           </el-tabs>
         </div>

@@ -51,6 +51,9 @@
           <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
+              <div v-show="show">
+                <img src="../diagrams/boxoffice_ratio_bar.png" alt="boxoffice_ratio_bar" />
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -75,7 +78,7 @@ export default {
       yearSelected: '',
       quarterSelected: '',
       monthSelected: '',
-      show: false,
+      show: 0,
       years: [
         {label: '2015', value: '2015'},
         {label: '2016', value: '2016'},
@@ -108,14 +111,27 @@ export default {
   },
   methods: {
     drawPic: function () {
-      console.log('Hello!')
-      // this.axios.post('/data/boxoffice_ratio', {
-      //   yearSelected: this.yearSelected,
-      //   quarterSelected: this.quarterSelected,
-      //   monthSelected: this.monthSelected
-      // }).then(res => {
-      //   console.log(res)
-      // })
+      var flag = 0
+      var drawRequest = {
+        a: 2,
+        func_selected: '0',
+        year: '0',
+        quarter: '0',
+        month: '0',
+        top_x: 0
+      }
+      drawRequest.func_selected = '1'
+      drawRequest.year = this.yearSelected
+      drawRequest.quarter = this.quarterSelected
+      drawRequest.month = this.monthSelected
+      var postData = this.$qs.stringify(drawRequest)
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response)
+        flag = 1
+      }).catch(function (error) {
+        console.log(error)
+      })
+      this.show = flag
     }
   }
 }

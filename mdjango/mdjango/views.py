@@ -2,6 +2,7 @@ from django.http import HttpResponse
 import json
 from mova.models import *
 from visualization.models import *
+from bots.mspider.mspider.start import run_spider
 
 
 def handle(f_name, f_director, f_actor):
@@ -74,11 +75,11 @@ def movie(request):
                 return HttpResponse(dic)
             elif int(a) == 2:
                 #visualization
-                func_selected = str(request.POST.get('func_selected', 0))
-                year = str(request.POST.get('year', 0))
-                quarter = str(request.POST.get('quarter', 0))
-                month = str(request.POST.get('month', 0))
-                top_x = int(request.POST.get('top_x', 0))
+                func_selected = request.POST.get('func_selected', 0)
+                year = request.POST.get('year', 0)
+                quarter = request.POST.get('quarter', 0)
+                month = request.POST.get('month', 0)
+                top_x = request.POST.get('top_x', 0)
                 info = data_visualization(func_selected, year, quarter, month, top_x)
                 return HttpResponse(info)
             elif int(a) == 3:
@@ -87,7 +88,12 @@ def movie(request):
                 info = save_chart(chart_download)
                 return HttpResponse(info)
             elif int(a) == 4:
-                pass#spider
+                spider_start = request.POST.get('start', 0)
+                if spider_start:
+                    run_spider()
+                    return HttpResponse('正在爬取...')
+                else:
+                    return HttpResponse('爬取失败:-(')
             else:
                 return HttpResponse('无效功能')
         else:

@@ -20,22 +20,22 @@
             </template>
             <el-submenu index="/bar">
               <template slot="title">柱状图</template>
-              <el-menu-item index="/bar/box-office-rate">题材票房比例</el-menu-item>
-              <el-menu-item index="/bar/box-office-rank">电影票房top排名</el-menu-item>
-              <el-menu-item index="/bar/performance-rank">演员出演top排名</el-menu-item>
+              <el-menu-item index="/bar-box-office-rate">题材票房比例</el-menu-item>
+              <el-menu-item index="/bar-box-office-rank">电影票房top排名</el-menu-item>
+              <el-menu-item index="/bar-performance-rank">演员出演top排名</el-menu-item>
             </el-submenu>
             <el-submenu index="/line">
               <template slot="title">折线图</template>
-              <el-menu-item index="/line/box-office-tend">电影票房变化趋势</el-menu-item>
+              <el-menu-item index="/line-box-office-tend">电影票房变化趋势</el-menu-item>
             </el-submenu>
             <el-submenu index="/pie">
               <template slot="title">饼图</template>
-              <el-menu-item index="/pie/box-office-rate">题材票房比例</el-menu-item>
+              <el-menu-item index="/pie-box-office-rate">题材票房比例</el-menu-item>
             </el-submenu>
             <el-submenu index="/word-cloud">
               <template slot="title">词云</template>
-              <el-menu-item index="/word-cloud/box-office-rank">电影票房top排名</el-menu-item>
-              <el-menu-item index="/word-cloud/performance-rank">演员出演top排名</el-menu-item>
+              <el-menu-item index="/word-cloud-box-office-rank">电影票房top排名</el-menu-item>
+              <el-menu-item index="/word-cloud-performance-rank">演员出演top排名</el-menu-item>
             </el-submenu>
           </el-submenu>
           <el-menu-item index="/select">
