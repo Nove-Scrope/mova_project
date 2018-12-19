@@ -36,12 +36,13 @@
             </div>
           </el-col>
         </el-row>
-        <div class="graph">
+        <div id="wordChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
+        <!-- <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
             </el-tab-pane>
           </el-tabs>
-        </div>
+        </div> -->
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -78,7 +79,64 @@ export default {
   methods: {
     postData: function () {
       console.log('Hello!')
+    },
+    drawWord: function () {
+      var wordChart = this.$echarts.init(document.getElementById('wordChart'))
+      var option = {
+        title: {
+          text: 'ECharts 入门示例',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {
+          show: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {
+              iconStyle: {
+                normal: {
+                  color: '#333'
+                }
+              }
+            }
+          }
+        },
+        series: [{
+          name: '访问来源',
+          type: 'wordCloud',
+          gridSize: 20,
+          sizeRange: [12, 50],
+          rotationRange: [0, 0],
+          shape: 'circle',
+          data: [
+            {value: 235, name: '视频广告'},
+            {value: 27, name: '联盟广告'},
+            {value: 130, name: '邮件营销'},
+            {value: 305, name: '直接访问'},
+            {value: 400, name: '搜索引擎'}
+          ],
+          textStyle: {
+            normal: {
+              color: function (v) {
+                let color = ['#27D38A', '#FFCA1C', '#5DD1FA', '#F88E25', '#47A0FF', '#FD6565']
+                let num = Math.floor(Math.random() * (5 + 1))
+                return color[num]
+              }
+            },
+            emphasis: {
+              shadowBlur: 5,
+              shadowColor: '#bdc3c7'
+            }
+          }
+        }]
+      }
+      wordChart.setOption(option)
     }
+  },
+  mounted () {
+    this.drawWord()
   }
 }
 </script>

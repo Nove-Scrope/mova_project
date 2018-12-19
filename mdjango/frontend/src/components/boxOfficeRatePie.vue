@@ -48,12 +48,13 @@
               </div>
             </el-col>
           </el-row>
-          <div class="graph">
+        <div id="pieChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
+        <!-- <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
             </el-tab-pane>
           </el-tabs>
-        </div>
+        </div> -->
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -108,7 +109,51 @@ export default {
   methods: {
     postData: function () {
       console.log('Hello!')
+    },
+    drawPie: function () {
+      var pieChart = this.$echarts.init(document.getElementById('pieChart'))
+      var option = {
+        title: {
+          text: 'ECharts 入门示例',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        series: [{
+          name: '访问来源',
+          type: 'pie',
+          roseType: 'angle',
+          radius: '65%',
+          data: [
+            {value: 235, name: '视频广告'},
+            {value: 274, name: '联盟广告'},
+            {value: 310, name: '邮件营销'},
+            {value: 335, name: '直接访问'},
+            {value: 400, name: '搜索引擎'}
+          ]
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          color: '#e74c3c',
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        },
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1]
+          }
+        }
+      }
+      pieChart.setOption(option)
     }
+  },
+  mounted () {
+    this.drawPie()
   }
 }
 </script>

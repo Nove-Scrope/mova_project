@@ -48,15 +48,14 @@
               </div>
             </el-col>
           </el-row>
-          <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-              <div v-show="imgShow">
-                <h1>Here is the pic</h1>
-              </div>
-            </el-tab-pane>
+          <!-- <div class="graph"> -->
+          <!-- <img src="../diagrams/boxoffice_ratio_bar.png" /> -->
+          <!-- <el-tabs  tab-position="left">
+            <el-tab-pane label="pic"> -->
+          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;"></div>
+            <!-- </el-tab-pane>
           </el-tabs>
-        </div>
+        </div> -->
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -132,7 +131,45 @@ export default {
         console.log(error)
       })
       this.imgShow = flag
+    },
+    drawBar: function () {
+      var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')
+      var option = {
+        title: {
+          text: 'ECharts 入门示例',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ['销量'],
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        },
+        yAxis: {},
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        }
+      }
+      barChart.setOption(option)
     }
+  },
+  mounted () {
+    this.drawBar()
   }
 }
 </script>
@@ -161,8 +198,8 @@ h1 {
 h6 {
   color: #ffffff;
 }
-.graph {
+/* .graph {
   margin-top: 20px;
   background: white;
-}
+} */
 </style>
