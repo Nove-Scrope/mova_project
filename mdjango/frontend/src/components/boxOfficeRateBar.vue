@@ -48,11 +48,11 @@
               </div>
             </el-col>
           </el-row>
+          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;"></div>
           <!-- <div class="graph"> -->
           <!-- <img src="../diagrams/boxoffice_ratio_bar.png" /> -->
           <!-- <el-tabs  tab-position="left">
             <el-tab-pane label="pic"> -->
-          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;"></div>
             <!-- </el-tab-pane>
           </el-tabs>
         </div> -->
@@ -68,7 +68,7 @@
 import MainHeader from './MainHeader'
 
 export default {
-  name: 'boxOfficeBar',
+  name: 'boxOfficeRateBar',
   components: {
     'main-header': MainHeader
   },
@@ -77,7 +77,6 @@ export default {
       yearSelected: '',
       quarterSelected: '',
       monthSelected: '',
-      imgShow: 0,
       years: [
         {label: '2015', value: '2015'},
         {label: '2016', value: '2016'},
@@ -110,7 +109,6 @@ export default {
   },
   methods: {
     drawPic: function () {
-      var flag = 0
       var drawRequest = {
         a: 2,
         func_selected: '0',
@@ -126,11 +124,9 @@ export default {
       var postData = this.$qs.stringify(drawRequest)
       this.axios.post('movie/', postData).then(function (response) {
         console.log(response)
-        flag = 1
       }).catch(function (error) {
         console.log(error)
       })
-      this.imgShow = flag
     },
     drawBar: function () {
       var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')

@@ -54,7 +54,7 @@
 import MainHeader from './MainHeader'
 
 export default {
-  name: 'boxOfficeBar',
+  name: 'performanceRankWordCloud',
   components: {
     'main-header': MainHeader
   },
@@ -77,8 +77,24 @@ export default {
     }
   },
   methods: {
-    postData: function () {
-      console.log('Hello!')
+    drawPic: function () {
+      var drawRequest = {
+        a: 2,
+        func_selected: '0',
+        year: '0',
+        quarter: '0',
+        month: '0',
+        top_x: 0
+      }
+      drawRequest.func_selected = '7'
+      drawRequest.year = this.rankYearSelected
+      drawRequest.top_x = this.rankSelected
+      var postData = this.$qs.stringify(drawRequest)
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response)
+      }).catch(function (error) {
+        console.log(error)
+      })
     }
   }
 }

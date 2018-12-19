@@ -93,7 +93,20 @@ export default {
         // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
         // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
         this.diagramChecked.sort()
-        console.log(this.diagramChecked)
+        var selected = ''
+        selected = this.diagramChecked.join('')
+        // alert(selected)
+        var downloadRequest = {
+          a: 3,
+          chart_download: '0'
+        }
+        downloadRequest.chart_download = selected
+        var postData = this.$qs.stringify(downloadRequest)
+        this.axios.post('movie/', postData).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     },
     toMainPage: function () {

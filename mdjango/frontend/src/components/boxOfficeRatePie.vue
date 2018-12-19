@@ -44,7 +44,7 @@
             </el-col>
             <el-col :span="4">
               <div class="draw">
-                <el-button class="draw-btn" @click="postData" round>画图</el-button>
+                <el-button class="draw-btn" @click="drawPic" round>画图</el-button>
               </div>
             </el-col>
           </el-row>
@@ -107,8 +107,25 @@ export default {
     }
   },
   methods: {
-    postData: function () {
-      console.log('Hello!')
+    drawPic: function () {
+      var drawRequest = {
+        a: 2,
+        func_selected: '0',
+        year: '0',
+        quarter: '0',
+        month: '0',
+        top_x: 0
+      }
+      drawRequest.func_selected = '5'
+      drawRequest.year = this.firstYearSelected
+      drawRequest.quarter = this.secondYearSelected
+      drawRequest.month = this.thirdYearSelected
+      var postData = this.$qs.stringify(drawRequest)
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response)
+      }).catch(function (error) {
+        console.log(error)
+      })
     },
     drawPie: function () {
       var pieChart = this.$echarts.init(document.getElementById('pieChart'))
@@ -126,7 +143,7 @@ export default {
           radius: '65%',
           data: [
             {value: 235, name: '视频广告'},
-            {value: 274, name: '联盟广告'},
+            {value: 254, name: '联盟广告'},
             {value: 310, name: '邮件营销'},
             {value: 335, name: '直接访问'},
             {value: 400, name: '搜索引擎'}

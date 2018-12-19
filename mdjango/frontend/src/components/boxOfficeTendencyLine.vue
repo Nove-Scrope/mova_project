@@ -44,7 +44,7 @@
           </el-col>
           <el-col :span="4">
             <div class="draw">
-              <el-button class="draw-btn" @click="postData" round>画图</el-button>
+              <el-button class="draw-btn" @click="drawPic" round>画图</el-button>
             </div>
           </el-col>
         </el-row>
@@ -92,8 +92,25 @@ export default {
     }
   },
   methods: {
-    postData: function () {
-      console.log('Hello!')
+    drawPic: function () {
+      var drawRequest = {
+        a: 2,
+        func_selected: '0',
+        year: '0',
+        quarter: '0',
+        month: '0',
+        top_x: 0
+      }
+      drawRequest.func_selected = '4'
+      drawRequest.year = this.firstYearSelected
+      drawRequest.quarter = this.secondYearSelected
+      drawRequest.month = this.thirdYearSelected
+      var postData = this.$qs.stringify(drawRequest)
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response)
+      }).catch(function (error) {
+        console.log(error)
+      })
     },
     drawLine: function () {
       var lineChart = this.$echarts.init(document.getElementById('lineChart'), 'light')
