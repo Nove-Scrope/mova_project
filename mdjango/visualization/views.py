@@ -10,7 +10,9 @@ class VisualizationChart:
         self.data_name = data_name
         self.x_axis = x_axis
         self.y_axis = y_axis
-        self.chart_name = './frontend/src/diagrams/' + chart_name
+#        self.chart_name = './frontend/src/diagrams/' + chart_name
+        self.chart_name = './frontend/dist/static/' + chart_name
+
 
     def histogram(self):
         bar = pyecharts.Bar(self.title)

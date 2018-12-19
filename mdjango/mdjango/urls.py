@@ -21,5 +21,5 @@ from mdjango import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('movie/', views.movie, name='movie'),
-    path('', TemplateView.as_view(template_name='index.html'))
+    path('', TemplateView.as_view(template_name='index.html')),
 ]

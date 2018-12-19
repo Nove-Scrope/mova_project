@@ -101,3 +101,4 @@ def movie(request):
  
     else:
         return HttpResponse('方法错误')
+    

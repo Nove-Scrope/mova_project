@@ -51,6 +51,9 @@
           <div class="graph">
           <el-tabs  tab-position="left">
             <el-tab-pane label="pic">
+              <div v-show="imgShow">
+                <h1>Here is the pic</h1>
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -75,7 +78,7 @@ export default {
       yearSelected: '',
       quarterSelected: '',
       monthSelected: '',
-      show: 0,
+      imgShow: 0,
       years: [
         {label: '2015', value: '2015'},
         {label: '2016', value: '2016'},
@@ -128,7 +131,7 @@ export default {
       }).catch(function (error) {
         console.log(error)
       })
-      this.show = flag
+      this.imgShow = flag
     }
   }
 }

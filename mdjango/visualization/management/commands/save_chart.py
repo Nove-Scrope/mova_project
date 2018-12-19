@@ -11,7 +11,7 @@ class Command(BaseCommand):
         funcs_selected = options['func-selected']
         chart_save_path = './downloads'
         chart_file_dict = {
-            '1': "./frontend/src/diagrams/boxoffice_ratio_bar.png",
+            '1': "boxoffice_ratio_bar.png",
             '2': "top_movie_bar.png",
             '3': "top_actor_bar.png",
             '4': "boxoffice_trend_line.png",
