@@ -65,15 +65,11 @@ export default {
         var postData = this.$qs.stringify(crawlRequest)
         this.axios.post('movie/', postData).then(function (response) {
           console.log(response.data)
-          msg = response.data
+          msg = response.data.toString()
         }).catch(function (error) {
           console.log(error)
         })
-        if (msg === '爬取失败:-(') {
-          this.$message({type: 'error', message: '数据更新失败！'})
-        } else if (msg === '正在爬取...') {
-          this.$message({type: 'success', message: '数据更新成功！'})
-        }
+        alert('msg')
       }
     },
     toMainPage: function () {
