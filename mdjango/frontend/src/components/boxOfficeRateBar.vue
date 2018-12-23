@@ -48,14 +48,7 @@
               </div>
             </el-col>
           </el-row>
-          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;"></div>
-          <!-- <div class="graph"> -->
-          <!-- <img src="../diagrams/boxoffice_ratio_bar.png" /> -->
-          <!-- <el-tabs  tab-position="left">
-            <el-tab-pane label="pic"> -->
-            <!-- </el-tab-pane>
-          </el-tabs>
-        </div> -->
+          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;margin-left: 50px;"></div>
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -122,8 +115,59 @@ export default {
       drawRequest.quarter = this.quarterSelected
       drawRequest.month = this.monthSelected
       var postData = this.$qs.stringify(drawRequest)
+      var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')
+      barChart.setOption({
+        title: {
+          text: '',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ['题材'],
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: []
+        },
+        yAxis: {},
+        series: [{
+          name: '票房',
+          type: 'bar',
+          data: []
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        }
+      })
+      barChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
       this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
+        console.log(response.data)
+        barChart.hideLoading()
+        barChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          xAxis: {
+            data: response.data['x_axis']
+          },
+          series: [{
+            name: '票房',
+            data: response.data['y_axis']
+          }]
+        })
       }).catch(function (error) {
         console.log(error)
       })
@@ -132,26 +176,26 @@ export default {
       var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')
       var option = {
         title: {
-          text: 'ECharts 入门示例',
+          text: 'XXXX年X月/季度题材票房比例',
           textStyle: {
             color: '#ffffff'
           }
         },
         tooltip: {},
         legend: {
-          data: ['销量'],
+          data: ['题材'],
           textStyle: {
             color: '#ffffff'
           }
         },
         xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          data: []
         },
         yAxis: {},
         series: [{
-          name: '销量',
+          name: '票房',
           type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
+          data: []
         }],
         textStyle: {
           color: '#ffffff'
@@ -194,8 +238,4 @@ h1 {
 h6 {
   color: #ffffff;
 }
-/* .graph {
-  margin-top: 20px;
-  background: white;
-} */
 </style>

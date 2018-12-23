@@ -163,49 +163,51 @@ class MovieData:
 
 
 def data_visualization(func_selected, year, quarter, month, top_x):
-    info = ""
+    data_dict = {}
     movie_data = MovieData(year, quarter, month, top_x)
     if func_selected == '1':
-        movie_data.get_boxoffice_ratio()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.histogram()
+            movie_data.get_boxoffice_ratio()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.histogram()
     elif func_selected == '2':
-        movie_data.get_top_movie()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.histogram()
+            movie_data.get_top_movie()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.histogram()
     elif func_selected == '3':
-        movie_data.get_top_actor()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.histogram()
+            movie_data.get_top_actor()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.histogram()
     elif func_selected == '4':
-        movie_data.get_boxoffice_trend()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.line()
+            movie_data.get_boxoffice_trend()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.line()
     elif func_selected == '5':
-        movie_data.get_boxoffice_ratio()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.pie()
+            movie_data.get_boxoffice_ratio()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.pie()
     elif func_selected == '6':
-        movie_data.get_top_movie()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.word_cloud()
+            movie_data.get_top_movie()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.word_cloud()
     elif func_selected == '7':
-        movie_data.get_top_actor()
-        movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
-                                          movie_data.y_axis, movie_data.chart_name)
-        movie_charts.word_cloud()
-    else:
-        info = 'input error'
-    if not info:
-        info = 'successfully generate chart png'
-    return info
-
+            movie_data.get_top_actor()
+            data_dict = {'chart_title': movie_data.title, 'x_axis': movie_data.x_axis, 'y_axis': movie_data.y_axis}
+            movie_charts = VisualizationChart(movie_data.title, movie_data.data_name, movie_data.x_axis,
+                                                                                movie_data.y_axis, movie_data.chart_name)
+            movie_charts.word_cloud()
+    return data_dict
 
 def save_chart(chart_download):
     info = ""

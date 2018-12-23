@@ -79,9 +79,10 @@ def movie(request):
                 year = request.POST.get('year', '0')
                 quarter = request.POST.get('quarter','0')
                 month = request.POST.get('month', '0')
-                top_x = request.POST.get('top_x', 0)
-                info = data_visualization(func_selected, year, quarter, month, top_x)
-                return HttpResponse(info)
+                top_x = int(request.POST.get('top_x', 0))
+                data_dict = data_visualization(func_selected, year, quarter, month, top_x)
+                data_json = json.dumps(data_dict)
+                return HttpResponse(data_json)
             elif int(a) == 3:
                 #save chart
                 chart_download = str(request.POST.get('chart_download'))

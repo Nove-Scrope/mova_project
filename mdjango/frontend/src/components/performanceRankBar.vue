@@ -36,12 +36,7 @@
             </div>
           </el-col>
         </el-row>
-        <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-            </el-tab-pane>
-          </el-tabs>
-        </div>
+        <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;margin-left: 50px;"></div>
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -61,7 +56,7 @@ export default {
   data () {
     return {
       rankYearSelected: '',
-      rankSelected: '',
+      rankSelected: 0,
       years: [
         {label: '2015', value: '2015'},
         {label: '2016', value: '2016'},
@@ -69,9 +64,9 @@ export default {
         {label: '2018', value: '2018'}
       ],
       rank: [
-        {label: '前3名', value: '3'},
-        {label: '前5名', value: '5'},
-        {label: '前10名', value: '10'}
+        {label: '前3名', value: 3},
+        {label: '前5名', value: 5},
+        {label: '前10名', value: 10}
       ]
     }
   },
@@ -89,12 +84,105 @@ export default {
       drawRequest.year = this.rankYearSelected
       drawRequest.top_x = this.rankSelected
       var postData = this.$qs.stringify(drawRequest)
+      var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')
+      barChart.setOption({
+        title: {
+          text: '',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ['题材'],
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: [],
+          axisLabel: {
+            rotate: 30,
+            fontSize: 10
+          }
+        },
+        yAxis: {},
+        series: [{
+          name: '票房',
+          type: 'bar',
+          data: []
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        }
+      })
+      barChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
       this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
+        console.log(response.data)
+        barChart.hideLoading()
+        barChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          xAxis: {
+            data: response.data['x_axis']
+          },
+          series: [{
+            name: '票房',
+            data: response.data['y_axis']
+          }]
+        })
       }).catch(function (error) {
         console.log(error)
       })
+    },
+    drawBar: function () {
+      var barChart = this.$echarts.init(document.getElementById('barChart'), 'light')
+      var option = {
+        title: {
+          text: 'XXXX年X月/季度题材票房比例',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ['题材'],
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: []
+        },
+        yAxis: {},
+        series: [{
+          name: '票房',
+          type: 'bar',
+          data: []
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        }
+      }
+      barChart.setOption(option)
     }
+  },
+  mounted () {
+    this.drawBar()
   }
 }
 </script>
@@ -122,9 +210,5 @@ h1 {
 }
 h6 {
   color: #ffffff;
-}
-.graph {
-  margin-top: 20px;
-  background: white;
 }
 </style>
