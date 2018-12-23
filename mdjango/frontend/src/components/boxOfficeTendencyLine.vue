@@ -48,13 +48,7 @@
             </div>
           </el-col>
         </el-row>
-        <div id="lineChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
-        <!-- <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-            </el-tab-pane>
-          </el-tabs>
-        </div> -->
+        <div id="lineChart" style="width: 600px;height: 400px;margin-top: 50px;"></div>
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -106,8 +100,77 @@ export default {
       drawRequest.quarter = this.secondYearSelected
       drawRequest.month = this.thirdYearSelected
       var postData = this.$qs.stringify(drawRequest)
+      var lineChart = this.$echarts.init(document.getElementById('lineChart'), 'light')
+      lineChart.setOption({
+        title: {
+          text: '',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ['月份'],
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        xAxis: {
+          data: [],
+          axisLabel: {
+            rotate: 30,
+            fontSize: 10
+          }
+        },
+        yAxis: {},
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        }
+      })
+      lineChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
+      var legends = []
+      legends.push(this.firstYearSelected)
+      legends.push(this.secondYearSelected)
+      legends.push(this.thirdYearSelected)
+      legends.sort()
       this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
+        console.log(response.data)
+        lineChart.hideLoading()
+        lineChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          xAxis: {
+            data: response.data['x_axis']
+          },
+          series: [{
+            name: legends[0],
+            type: 'line',
+            stack: '票房',
+            data: response.data['y_axis'][0]
+          },
+          {
+            name: legends[1],
+            type: 'line',
+            stack: '票房',
+            data: response.data['y_axis'][1]
+          },
+          {
+            name: legends[2],
+            type: 'line',
+            stack: '票房',
+            data: response.data['y_axis'][2]
+          }]
+        })
       }).catch(function (error) {
         console.log(error)
       })
@@ -116,13 +179,13 @@ export default {
       var lineChart = this.$echarts.init(document.getElementById('lineChart'), 'light')
       var option = {
         title: {
-          text: '折线图堆叠'
+          text: 'XXXX至XXXX每月电影票房变化趋势（单位： 万元）'
         },
         tooltip: {
           trigger: 'axis'
         },
         legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+          data: []
         },
         grid: {
           left: '3%',
@@ -138,40 +201,34 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: []
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          name: '邮件营销',
+          name: '2015',
           type: 'line',
-          stack: '总量',
-          data: [120, 132, 101, 134, 90, 230, 210]
+          stack: '票房',
+          data: []
         },
         {
-          name: '联盟广告',
+          name: '2016',
           type: 'line',
-          stack: '总量',
-          data: [220, 182, 191, 234, 290, 330, 310]
+          stack: '票房',
+          data: []
         },
         {
-          name: '视频广告',
+          name: '2017',
           type: 'line',
-          stack: '总量',
-          data: [150, 232, 201, 154, 190, 330, 410]
+          stack: '票房',
+          data: []
         },
         {
-          name: '直接访问',
+          name: '2018',
           type: 'line',
-          stack: '总量',
-          data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-          name: '搜索引擎',
-          type: 'line',
-          stack: '总量',
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
+          stack: '票房',
+          data: []
         }],
         textStyle: {
           color: '#ffffff'
