@@ -151,6 +151,11 @@ export default {
           }
         },
         tooltip: {},
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
         legend: {
           data: ['题材'],
           textStyle: {

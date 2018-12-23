@@ -49,12 +49,6 @@
             </el-col>
           </el-row>
         <div id="pieChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
-        <!-- <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-            </el-tab-pane>
-          </el-tabs>
-        </div> -->
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -121,33 +115,20 @@ export default {
       drawRequest.quarter = this.secondYearSelected
       drawRequest.month = this.thirdYearSelected
       var postData = this.$qs.stringify(drawRequest)
-      this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
-      }).catch(function (error) {
-        console.log(error)
-      })
-    },
-    drawPie: function () {
-      var pieChart = this.$echarts.init(document.getElementById('pieChart'))
-      var option = {
+      var pieChart = this.$echarts.init(document.getElementById('pieChart'), 'light')
+      pieChart.setOption({
         title: {
-          text: 'ECharts 入门示例',
+          text: 'XXXX年X月/季度题材票房比例',
           textStyle: {
             color: '#ffffff'
           }
         },
         series: [{
-          name: '访问来源',
+          name: '票房比例',
           type: 'pie',
           roseType: 'angle',
           radius: '65%',
-          data: [
-            {value: 235, name: '视频广告'},
-            {value: 254, name: '联盟广告'},
-            {value: 310, name: '邮件营销'},
-            {value: 335, name: '直接访问'},
-            {value: 400, name: '搜索引擎'}
-          ]
+          data: []
         }],
         textStyle: {
           color: '#ffffff'
@@ -159,7 +140,77 @@ export default {
         },
         visualMap: {
           show: false,
-          min: 80,
+          min: 50,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1]
+          }
+        }
+      })
+      pieChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response.data)
+        var tmpList = []
+        var tmpObject = {
+          value: 0,
+          name: ''
+        }
+        var length = len(response.data['y_axis'])
+        for (var i = 0; i < length; i++) {
+          tmpObject.value = response.data['y_axis'][i]
+          tmpObject.name = response.data['x_axis'][i]
+          tmpList.push(tmpObject)
+        }
+        pieChart.hideLoading()
+        pieChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          series: tmpList
+        })
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    drawPie: function () {
+      var pieChart = this.$echarts.init(document.getElementById('pieChart'))
+      var option = {
+        title: {
+          text: 'XXXX年X月/季度题材票房比例',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        series: [{
+          name: '票房比例',
+          type: 'pie',
+          roseType: 'angle',
+          radius: '65%',
+          data: []
+          // data: [
+          //   {value: 235, name: '视频广告'},
+          //   {value: 254, name: '联盟广告'},
+          //   {value: 310, name: '邮件营销'},
+          //   {value: 335, name: '直接访问'},
+          //   {value: 400, name: '搜索引擎'}
+          // ]
+        }],
+        textStyle: {
+          color: '#ffffff'
+        },
+        itemStyle: {
+          color: '#e74c3c',
+          shadowBlur: 100,
+          shadowColor: '#000000'
+        },
+        visualMap: {
+          show: false,
+          min: 50,
           max: 600,
           inRange: {
             colorLightness: [0, 1]
@@ -198,9 +249,5 @@ h1 {
 }
 h6 {
   color: #ffffff;
-}
-.graph {
-  margin-top: 20px;
-  background: white;
 }
 </style>

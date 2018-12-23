@@ -155,19 +155,16 @@ export default {
           series: [{
             name: legends[0],
             type: 'line',
-            stack: '票房',
             data: response.data['y_axis'][0]
           },
           {
             name: legends[1],
             type: 'line',
-            stack: '票房',
             data: response.data['y_axis'][1]
           },
           {
             name: legends[2],
             type: 'line',
-            stack: '票房',
             data: response.data['y_axis'][2]
           }]
         })
@@ -204,30 +201,18 @@ export default {
           data: []
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisTick: {
+            alignWithLabel: true,
+            lineStyle: {
+              color: '#ffffff',
+              type: 'dotted'
+            }
+          }
         },
         series: [{
-          name: '2015',
+          name: '',
           type: 'line',
-          stack: '票房',
-          data: []
-        },
-        {
-          name: '2016',
-          type: 'line',
-          stack: '票房',
-          data: []
-        },
-        {
-          name: '2017',
-          type: 'line',
-          stack: '票房',
-          data: []
-        },
-        {
-          name: '2018',
-          type: 'line',
-          stack: '票房',
           data: []
         }],
         textStyle: {
