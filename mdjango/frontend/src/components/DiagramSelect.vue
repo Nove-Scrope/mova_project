@@ -66,10 +66,6 @@ export default {
   },
   data () {
     return {
-      // barChecked: [],
-      // lineChecked: [],
-      // pieChecked: [],
-      // wordCloudChecked: [],
       diagramChecked: []
     }
   },
@@ -88,14 +84,9 @@ export default {
           showClose: false
         })
       } else {
-        // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
-        // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
-        // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
-        // this.diagramChecked.push.apply(this.diagramChecked, this.barChecked)
         this.diagramChecked.sort()
         var selected = ''
         selected = this.diagramChecked.join('')
-        // alert(selected)
         var downloadRequest = {
           a: 3,
           chart_download: '0'
@@ -104,6 +95,7 @@ export default {
         var postData = this.$qs.stringify(downloadRequest)
         this.axios.post('movie/', postData).then(function (response) {
           console.log(response)
+          alert('pdf已保存至软件根目录!')
         }).catch(function (error) {
           console.log(error)
         })

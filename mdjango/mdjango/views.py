@@ -80,13 +80,15 @@ def movie(request):
                 quarter = request.POST.get('quarter','0')
                 month = request.POST.get('month', '0')
                 top_x = int(request.POST.get('top_x', 0))
+                print(func_selected, year, quarter, month, top_x)
                 data_dict = data_visualization(func_selected, year, quarter, month, top_x)
                 data_json = json.dumps(data_dict)
                 return HttpResponse(data_json)
             elif int(a) == 3:
                 #save chart
                 chart_download = str(request.POST.get('chart_download'))
-                info = save_chart(chart_download)
+                info = save_charts_as_pdf(chart_download)
+                info = json.dumps(info)
                 return HttpResponse(info)
             elif int(a) == 4:
                 spider_start = request.POST.get('start', 0)

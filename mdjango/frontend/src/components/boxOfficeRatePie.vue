@@ -111,9 +111,9 @@ export default {
         top_x: 0
       }
       drawRequest.func_selected = '5'
-      drawRequest.year = this.firstYearSelected
-      drawRequest.quarter = this.secondYearSelected
-      drawRequest.month = this.thirdYearSelected
+      drawRequest.year = this.yearSelected
+      drawRequest.quarter = this.quarterSelected
+      drawRequest.month = this.monthSelected
       var postData = this.$qs.stringify(drawRequest)
       var pieChart = this.$echarts.init(document.getElementById('pieChart'), 'light')
       pieChart.setOption({

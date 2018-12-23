@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from mova.models import *
 from visualization.views import VisualizationChart
+from reportlab.pdfgen import canvas
 import shutil
 import os
 
@@ -209,9 +210,10 @@ def data_visualization(func_selected, year, quarter, month, top_x):
             movie_charts.word_cloud()
     return data_dict
 
-def save_chart(chart_download):
-    info = ""
-    chart_save_path = 'downloads'
+def save_charts_as_pdf(save_charts):
+    pdf_pagesize = (600, 300*len(save_charts))
+    c = canvas.Canvas("visualization_report.pdf", pagesize=pdf_pagesize)
+    cur_pos_in_pdf = 300 * (len(save_charts) - 1)
     chart_file_dict = {
         '1': "boxoffice_ratio_bar.png",
         '2': "top_movie_bar.png",
@@ -221,23 +223,13 @@ def save_chart(chart_download):
         '6': "top_movie_wordcloud.png",
         '7': "top_actor_wordcloud.png",
     }
-    selected_file = []
-    if not os.path.exists(chart_save_path):
-        os.makedirs(chart_save_path)
-    for chart in chart_download:
-        source_file = './frontend/dist/static/' + chart_file_dict[chart]
-        if not os.path.isfile(source_file):
-            info = "%s not exist!" % source_file
-        else:
-            shutil.copy(source_file, chart_save_path)
-            selected_file.append(chart_file_dict[chart])
-            info = "diagrams has been saved successfully in %s." % chart_save_path + chart_file_dict[chart]
-#    with open('diagrams.html', 'w', encoding='utf8') as html_file:
-#        html_file.write('<html><head><title>Diagram Dashboard</title></head><body>\n')
-#        for img in selected_file:
-#            html_file.write('    <object type="image/svg+xml" data="{0}" height=500></object>\n'.format(img))
-#        html_file.write('</body></html>')
-    return info
+    file_path_prefix = './frontend/dist/static/'
+    for chart in save_charts:
+        c.drawImage(file_path_prefix+chart_file_dict[chart], 25, cur_pos_in_pdf, 550, 275)
+        cur_pos_in_pdf -= 300
+    c.showPage()
+    c.save()
+    return 'done'
 
 
 # opts, args = getopt.getopt(sys.argv[1:], "f:y:q:m:t:")
