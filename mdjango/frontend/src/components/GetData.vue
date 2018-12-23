@@ -69,7 +69,7 @@ export default {
         }).catch(function (error) {
           console.log(error)
         })
-        alert('msg')
+        alert(msg)
       }
     },
     toMainPage: function () {
