@@ -132,19 +132,6 @@ export default {
         }],
         textStyle: {
           color: '#ffffff'
-        },
-        itemStyle: {
-          color: '#e74c3c',
-          shadowBlur: 100,
-          shadowColor: '#000000'
-        },
-        visualMap: {
-          show: false,
-          min: 50,
-          max: 600,
-          inRange: {
-            colorLightness: [0, 1]
-          }
         }
       })
       pieChart.showLoading({
@@ -155,30 +142,37 @@ export default {
       })
       this.axios.post('movie/', postData).then(function (response) {
         console.log(response.data)
+        var index
         var tmpList = []
-        var tmpObject = {
-          value: 0,
-          name: ''
-        }
-        var length = len(response.data['y_axis'])
-        for (var i = 0; i < length; i++) {
-          tmpObject.value = response.data['y_axis'][i]
-          tmpObject.name = response.data['x_axis'][i]
+        var length = response.data['y_axis'].length
+        for (index = 0; index < length; index++) {
+          var tmpObject = {
+            value: 0,
+            name: ''
+          }
+          tmpObject.value = response.data['y_axis'][index]
+          tmpObject.name = response.data['x_axis'][index]
           tmpList.push(tmpObject)
         }
+        console.log(tmpList)
         pieChart.hideLoading()
         pieChart.setOption({
           title: {
             text: response.data['chart_title']
           },
-          series: tmpList
+          series: {
+            data: tmpList
+          },
+          textStyle: {
+            color: '#ffffff'
+          }
         })
       }).catch(function (error) {
         console.log(error)
       })
     },
     drawPie: function () {
-      var pieChart = this.$echarts.init(document.getElementById('pieChart'))
+      var pieChart = this.$echarts.init(document.getElementById('pieChart'), 'light')
       var option = {
         title: {
           text: 'XXXX年X月/季度题材票房比例',
@@ -186,35 +180,15 @@ export default {
             color: '#ffffff'
           }
         },
+        tooltip: {},
         series: [{
           name: '票房比例',
           type: 'pie',
-          roseType: 'angle',
-          radius: '65%',
+          radius: '50%',
           data: []
-          // data: [
-          //   {value: 235, name: '视频广告'},
-          //   {value: 254, name: '联盟广告'},
-          //   {value: 310, name: '邮件营销'},
-          //   {value: 335, name: '直接访问'},
-          //   {value: 400, name: '搜索引擎'}
-          // ]
         }],
         textStyle: {
           color: '#ffffff'
-        },
-        itemStyle: {
-          color: '#e74c3c',
-          shadowBlur: 100,
-          shadowColor: '#000000'
-        },
-        visualMap: {
-          show: false,
-          min: 50,
-          max: 600,
-          inRange: {
-            colorLightness: [0, 1]
-          }
         }
       }
       pieChart.setOption(option)

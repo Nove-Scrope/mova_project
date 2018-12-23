@@ -37,12 +37,6 @@
           </el-col>
         </el-row>
         <div id="wordChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
-        <!-- <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-            </el-tab-pane>
-          </el-tabs>
-        </div> -->
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -90,17 +84,10 @@ export default {
       drawRequest.year = this.rankYearSelected
       drawRequest.top_x = this.rankSelected
       var postData = this.$qs.stringify(drawRequest)
-      this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
-      }).catch(function (error) {
-        console.log(error)
-      })
-    },
-    drawWord: function () {
       var wordChart = this.$echarts.init(document.getElementById('wordChart'))
-      var option = {
+      wordChart.setOption({
         title: {
-          text: 'ECharts 入门示例',
+          text: 'XXXX年票房排名TOP',
           textStyle: {
             color: '#ffffff'
           }
@@ -120,19 +107,93 @@ export default {
           }
         },
         series: [{
-          name: '访问来源',
+          name: '票房排名TOP',
           type: 'wordCloud',
           gridSize: 20,
           sizeRange: [12, 50],
           rotationRange: [0, 0],
           shape: 'circle',
-          data: [
-            {value: 235, name: '视频广告'},
-            {value: 27, name: '联盟广告'},
-            {value: 130, name: '邮件营销'},
-            {value: 305, name: '直接访问'},
-            {value: 400, name: '搜索引擎'}
-          ],
+          data: [],
+          textStyle: {
+            normal: {
+              color: function (v) {
+                let color = ['#27D38A', '#FFCA1C', '#5DD1FA', '#F88E25', '#47A0FF', '#FD6565']
+                let num = Math.floor(Math.random() * (5 + 1))
+                return color[num]
+              }
+            },
+            emphasis: {
+              shadowBlur: 5,
+              shadowColor: '#bdc3c7'
+            }
+          }
+        }]
+      })
+      wordChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
+      this.axios.post('movie/', postData).then(function (response) {
+        console.log(response.data)
+        var index
+        var tmpList = []
+        var length = response.data['y_axis'].length
+        for (index = 0; index < length; index++) {
+          var tmpObject = {
+            value: 0,
+            name: ''
+          }
+          tmpObject.value = response.data['y_axis'][index]
+          tmpObject.name = response.data['x_axis'][index]
+          tmpList.push(tmpObject)
+        }
+        console.log(tmpList)
+        wordChart.hideLoading()
+        wordChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          series: {
+            data: tmpList
+          }
+        })
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    drawWord: function () {
+      var wordChart = this.$echarts.init(document.getElementById('wordChart'))
+      var option = {
+        title: {
+          text: 'XXXX年票房排名TOP',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {
+          show: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {
+              iconStyle: {
+                normal: {
+                  color: '#333'
+                }
+              }
+            }
+          }
+        },
+        series: [{
+          name: '票房排名TOP',
+          type: 'wordCloud',
+          gridSize: 20,
+          sizeRange: [12, 50],
+          rotationRange: [0, 0],
+          shape: 'circle',
+          data: [],
           textStyle: {
             normal: {
               color: function (v) {
@@ -180,9 +241,5 @@ h1 {
 }
 h6 {
   color: #ffffff;
-}
-.graph {
-  margin-top: 20px;
-  background: white;
 }
 </style>

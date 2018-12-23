@@ -32,16 +32,11 @@
           </el-col>
           <el-col :span="6">
             <div class="draw">
-              <el-button class="draw-btn" @click="postData" round>画图</el-button>
+              <el-button class="draw-btn" @click="drawPic" round>画图</el-button>
             </div>
           </el-col>
         </el-row>
-        <div class="graph">
-          <el-tabs  tab-position="left">
-            <el-tab-pane label="pic">
-            </el-tab-pane>
-          </el-tabs>
-        </div>
+        <div id="wordChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -90,12 +85,136 @@ export default {
       drawRequest.year = this.rankYearSelected
       drawRequest.top_x = this.rankSelected
       var postData = this.$qs.stringify(drawRequest)
+      var wordChart = this.$echarts.init(document.getElementById('wordChart'))
+      wordChart.setOption({
+        title: {
+          text: 'XXXX年演员出演TOP',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {
+          show: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {
+              iconStyle: {
+                normal: {
+                  color: '#333'
+                }
+              }
+            }
+          }
+        },
+        series: [{
+          name: '演员出演排名TOP',
+          type: 'wordCloud',
+          gridSize: 20,
+          sizeRange: [12, 50],
+          rotationRange: [0, 0],
+          shape: 'circle',
+          data: [],
+          textStyle: {
+            normal: {
+              color: function (v) {
+                let color = ['#27D38A', '#FFCA1C', '#5DD1FA', '#F88E25', '#47A0FF', '#FD6565']
+                let num = Math.floor(Math.random() * (5 + 1))
+                return color[num]
+              }
+            },
+            emphasis: {
+              shadowBlur: 5,
+              shadowColor: '#bdc3c7'
+            }
+          }
+        }]
+      })
+      wordChart.showLoading({
+        text: '加载中',
+        color: '#20bf6b',
+        textColor: '#ffffff',
+        maskColor: '#2d3436'
+      })
       this.axios.post('movie/', postData).then(function (response) {
-        console.log(response)
+        console.log(response.data)
+        var index
+        var tmpList = []
+        var length = response.data['y_axis'].length
+        for (index = 0; index < length; index++) {
+          var tmpObject = {
+            value: 0,
+            name: ''
+          }
+          tmpObject.value = response.data['y_axis'][index]
+          tmpObject.name = response.data['x_axis'][index]
+          tmpList.push(tmpObject)
+        }
+        console.log(tmpList)
+        wordChart.hideLoading()
+        wordChart.setOption({
+          title: {
+            text: response.data['chart_title']
+          },
+          series: {
+            data: tmpList
+          }
+        })
       }).catch(function (error) {
         console.log(error)
       })
+    },
+    drawWord: function () {
+      var wordChart = this.$echarts.init(document.getElementById('wordChart'))
+      var option = {
+        title: {
+          text: 'XXXX年演员出演TOP',
+          textStyle: {
+            color: '#ffffff'
+          }
+        },
+        tooltip: {
+          show: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {
+              iconStyle: {
+                normal: {
+                  color: '#333'
+                }
+              }
+            }
+          }
+        },
+        series: [{
+          name: '演员出演排名TOP',
+          type: 'wordCloud',
+          gridSize: 20,
+          sizeRange: [12, 50],
+          rotationRange: [0, 0],
+          shape: 'circle',
+          data: [],
+          textStyle: {
+            normal: {
+              color: function (v) {
+                let color = ['#27D38A', '#FFCA1C', '#5DD1FA', '#F88E25', '#47A0FF', '#FD6565']
+                let num = Math.floor(Math.random() * (5 + 1))
+                return color[num]
+              }
+            },
+            emphasis: {
+              shadowBlur: 5,
+              shadowColor: '#bdc3c7'
+            }
+          }
+        }]
+      }
+      wordChart.setOption(option)
     }
+  },
+  mounted () {
+    this.drawWord()
   }
 }
 </script>
