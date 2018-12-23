@@ -211,7 +211,7 @@ def data_visualization(func_selected, year, quarter, month, top_x):
 
 def save_chart(chart_download):
     info = ""
-    chart_save_path = 'H:'
+    chart_save_path = 'downloads'
     chart_file_dict = {
         '1': "boxoffice_ratio_bar.png",
         '2': "top_movie_bar.png",
@@ -221,15 +221,22 @@ def save_chart(chart_download):
         '6': "top_movie_wordcloud.png",
         '7': "top_actor_wordcloud.png",
     }
+    selected_file = []
     if not os.path.exists(chart_save_path):
         os.makedirs(chart_save_path)
     for chart in chart_download:
-        source_file = './frontend/src/diagrams/' + chart_file_dict[chart]
+        source_file = './frontend/dist/static/' + chart_file_dict[chart]
         if not os.path.isfile(source_file):
             info = "%s not exist!" % source_file
         else:
             shutil.copy(source_file, chart_save_path)
-            info = "%s has been saved successfully." % chart_save_path + chart_file_dict[chart]
+            selected_file.append(chart_file_dict[chart])
+            info = "diagrams has been saved successfully in %s." % chart_save_path + chart_file_dict[chart]
+#    with open('diagrams.html', 'w', encoding='utf8') as html_file:
+#        html_file.write('<html><head><title>Diagram Dashboard</title></head><body>\n')
+#        for img in selected_file:
+#            html_file.write('    <object type="image/svg+xml" data="{0}" height=500></object>\n'.format(img))
+#        html_file.write('</body></html>')
     return info
 
 
