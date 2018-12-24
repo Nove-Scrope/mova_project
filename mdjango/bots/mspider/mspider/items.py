@@ -7,6 +7,13 @@
 
 import scrapy
 
+# from scrapy_djangoitem import DjangoItem
+# from mova.models import Actor
+
+
+# class FilmItem(DjangoItem):
+#     DjangoItem = Actor
+
 
 class MovieItem(scrapy.Item):
     name = scrapy.Field()
@@ -24,9 +31,3 @@ class MovieItem(scrapy.Item):
     score_34 = scrapy.Field()
     score_12 = scrapy.Field()
     score_num = scrapy.Field()
-    flag = scrapy.Field()
-
-
-# class ActorItem(scrapy.Item):
-#     name = scrapy.Field()
-#     sex = scrapy.Field()

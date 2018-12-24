@@ -65,11 +65,11 @@ export default {
         var postData = this.$qs.stringify(crawlRequest)
         this.axios.post('movie/', postData).then(function (response) {
           console.log(response.data)
-          msg = response.data.toString()
+          msg = response.data
+          alert(msg)
         }).catch(function (error) {
           console.log(error)
         })
-        alert(msg)
       }
     },
     toMainPage: function () {

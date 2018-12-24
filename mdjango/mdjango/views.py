@@ -2,7 +2,7 @@ from django.http import HttpResponse
 import json
 from mova.models import *
 from visualization.models import *
-from bots.mspider.mspider.start import run_spider
+from mdjango.runspider import thread
 
 
 def handle(f_name, f_director, f_actor):
@@ -93,8 +93,10 @@ def movie(request):
             elif int(a) == 4:
                 spider_start = request.POST.get('start', 0)
                 if spider_start:
-                    run_spider()
-                    return HttpResponse('正在爬取...')
+                    thread(spider_start)
+                    msg = 'OK'
+                    msg = json.dumps(msg)
+                    return HttpResponse(msg)
                 else:
                     return HttpResponse('爬取失败:-(')
             else:

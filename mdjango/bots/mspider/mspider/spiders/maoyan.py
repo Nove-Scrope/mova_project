@@ -5,19 +5,38 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
-from ..items import MovieItem
+from  ..items import MovieItem
+from scrapy.crawler import CrawlerRunner
+from scrapy.utils.log import configure_logging
+from twisted.internet import reactor
 
+from ..lilith import DataBase
+import sqlite3
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
+#try:
+#    chrome_options.add_argument('executable_path = "./chromedriver"')
+#except selenium.common.exceptions.WebDriverException:
+#    chrome_options.add_argument('executable_path = "./chromedriver.exe"')
 driver = webdriver.Chrome(chrome_options=chrome_options)
+# DataBase.link('../mdjango/database.db')
+dtb = DataBase()
+dtb.link('D:\pyproject\mdjango\dtbase.db')
+try:
+    dtb.create_table()
+except sqlite3.OperationalError:
+    pass
 
 
-class DoubanSpider(scrapy.Spider):
+class MaoyanSpider(scrapy.Spider):
     name = 'maoyan'
     allowed_domains = ['piaofang.maoyan.com']
     start_urls = ['http://piaofang.maoyan.com/rankings/year']
     driver.get(start_urls[0])
+
+    resultList = []
+    # movie = {}
 
     def parse(self, response):
         fatherUrl = 'http://piaofang.maoyan.com'
@@ -29,20 +48,17 @@ class DoubanSpider(scrapy.Spider):
         ActionChains(driver).double_click(left_click).perform()
         time.sleep(1)
         url_text = driver.page_source
-        # print(type(url_text))
-        moive_herf = re.findall(r'data-com="hrefTo,href:\'(.*)\'\"', url_text)
-        # print(moive_herf)
+        movie_herf = re.findall(r'data-com="hrefTo,href:\'(.*)\'\"', url_text)
         url_list = []
-        for i in moive_herf[:10]:
+        # 这里修改需要爬取的条数
+        for i in movie_herf[:10]:
             iurl = fatherUrl + i
             url_list.append(iurl)
-            # yield response.follow(iurl, callback=self.detail_parse)
-        print(url_list)
+            yield response.follow(iurl, callback=self.detail_parse)
 
     def detail_parse(self, response):
-        moive = MovieItem()
-
-        moive['name'] = response.xpath('//span[@class="info-title-content"]/text()').extract()[0]
+        movie = MovieItem()
+        movie['name'] = response.xpath('//span[@class="info-title-content"]/text()').extract()[0]
         type = response.xpath('//p[@class="info-category"]/text()').extract()
         if type:
             type = type[0].split('\n')[1].strip()
@@ -50,34 +66,33 @@ class DoubanSpider(scrapy.Spider):
             type = response.xpath('//span[@class="info-subtype ellipsis-1"]/text()').extract()
             if type:
                 type = type[0]
-
             else:
                 type = response.xpath('//span[@class="tv-types"]/text()').extract()[0]
-        moive['type'] = type
+        movie['type'] = type
 
         rlstime = response.xpath('//a/span[1]/text()').extract()
         if rlstime:
-            moive['releasetime'] = rlstime[0]
+            movie['releasetime'] = rlstime[0]
         else:
-            moive['releasetime'] = '--'
+            movie['releasetime'] = '--'
         # 星级评分
         star = response.xpath('//span[@class="rating-num"]/text()').extract()
         if star:
-            moive['ratestar'] = star[0]
+            movie['ratestar'] = star[0]
         else:
-            moive['ratestar'] = '--'
+            movie['ratestar'] = '--'
         score_num = response.xpath('//p[@class="detail-score-count"]/text()').extract()
         # 评分人数
         if score_num:
             score_num = score_num[0].split("观众评分")[0]
-            moive['score_num'] = score_num
+            movie['score_num'] = score_num
             scoreflag = response.xpath('//div[@class="info-block"]/a/@href').extract()
             if scoreflag:
                 # 猫眼各级评分人数占比
                 score = response.xpath('//div[@class="percentbar"]/span/text()').extract()
                 for i in range(0, 5):
                     label = 'score_' + str(9-2*i) + str(10-2*i)
-                    moive[label] = score[2*i + 1]
+                    movie[label] = score[2*i + 1]
 
         # 票房信息
         boxinfo = response.xpath('//div[@class="info-detail-row"]/div/p/span/text()').extract()
@@ -100,15 +115,15 @@ class DoubanSpider(scrapy.Spider):
             cumbox = '--'
             day1stbox = '--'
             week1stbox = '--'
-        moive['totalbox'] = cumbox
-        moive['fdaybox'] = day1stbox
-        moive['fweekbox'] = week1stbox
+        movie['totalbox'] = cumbox
+        movie['fdaybox'] = day1stbox
+        movie['fweekbox'] = week1stbox
         actors_url = str(response).split(" ")[1].split(">")[0] + '/celebritylist'
-        yield scrapy.Request(actors_url, meta={'moive': moive}, callback=self.director_parse)
+        yield scrapy.Request(actors_url, meta={'movie': movie}, callback=self.director_parse)
 
     # 导演、演员信息
     def director_parse(self, response):
-        moive = response.meta['moive']
+        movie = response.meta['movie']
         person_detail = response.xpath('//div[@class="panel-wrapper"]//span[@class="title-name"]/text()').extract()
         findlabel = ['导演', '演员']
         if findlabel[0] in person_detail:
@@ -128,7 +143,7 @@ class DoubanSpider(scrapy.Spider):
                 pass
             else:
                 director = response.xpath('//div[@class="p-desc"]/p[' + str(dposition) + ']/text()').extract()
-        moive['director'] = director
+        movie['director'] = director
 
         if aposition == -1:
             actor = '--'
@@ -136,7 +151,25 @@ class DoubanSpider(scrapy.Spider):
             actor = response.xpath('//div[@class="panel-wrapper"]/dl[' + str(aposition) + ']//div/p[1]/text()').extract()
         actorlen  = 10
         if len(actor) <= actorlen:
-            moive['actor'] = actor
+            movie['actor'] = actor
         else:
-            moive['actor'] = actor[:actorlen]
-        yield moive
+            movie['actor'] = actor[:actorlen]
+        # yield movie
+        self.resultList.append(movie)
+
+    def close(self, reason):
+        for i in self.resultList:
+            print(i)
+            filmInfo = {}
+            filmInfo['date'] = i['releasetime']
+            filmInfo['boxoffice'] = i['totalbox']
+            filmInfo['score'] = i['ratestar']
+            filmInfo['name'] = i['name']
+            filmInfo['type'] = i['type']
+            dtb.film_in(filmInfo)
+            actorInfo = i['actor']
+            for j in actorInfo:
+                dtb.actor_in({'name': j}, filmInfo['name'])
+            directorInfo = i['director']
+            for j in directorInfo:
+                dtb.director_in({'name': j}, filmInfo['name'])

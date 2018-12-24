@@ -8,10 +8,15 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-import os
-import sys
-from django.core.wsgi import get_wsgi_application
 
+# import os
+# import sys
+#
+# sys.path.append(os.path.dirname(os.path.abspath('.')))
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'mdjango.settings'
+#
+# import django
+# django.setup()
 
 BOT_NAME = 'mspider'
 
@@ -24,13 +29,14 @@ DOWNLOAD_TIMEOUT = 100
 CONCURRENT_REQUESTS_PER_IP = 1
 
 ITEM_PIPELINES = {
-    'mspider.pipelines.MspiderPipeline': 1,
+    'mspider.pipelines.MspiderPipeline': 100,
 }
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'mspider (+http://www.yourdomain.com)'
 
+# FEED_URI = 'test.csv'
+# FEED_FORMAT = 'CSV'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' \
@@ -60,9 +66,9 @@ DOWNLOAD_DELAY = 1
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'mspider.middlewares.MspiderSpiderMiddleware': 543,
-#}
+SPIDER_MIDDLEWARES = {
+   'mspider.middlewares.MspiderSpiderMiddleware': 543,
+}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
