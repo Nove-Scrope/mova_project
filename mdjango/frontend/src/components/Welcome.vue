@@ -8,7 +8,7 @@
       <el-main>
         <h3 align="center">Welcome to </h3>
         <h1 align="center">M  O. V. A.</h1>
-        <h3 align="center">your MOvie Visualization Analyse system</h3>
+        <h3 align="center">your MOvie Visualization Analysis system</h3>
       </el-main>
 
       <el-footer>
