@@ -48,7 +48,7 @@
               </div>
             </el-col>
           </el-row>
-          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;margin-left: 80px;"></div>
+          <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;margin-left: 80px;padding-left: 20px"></div>
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
