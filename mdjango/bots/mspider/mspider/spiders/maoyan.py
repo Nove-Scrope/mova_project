@@ -22,7 +22,8 @@ chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(chrome_options=chrome_options)
 # DataBase.link('../mdjango/database.db')
 dtb = DataBase()
-dtb.link('D:\pyproject\mdjango\dtbase.db')
+dtb.link('../mdjango/dtbase.db')
+
 try:
     dtb.create_table()
 except sqlite3.OperationalError:

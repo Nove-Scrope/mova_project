@@ -93,7 +93,7 @@ export default {
           },
           showClose: false
         })
-      } else if (this.pwdCheck !== this.pwdInput) {
+      } else if (this.pwdCheck !== this.pwdNew) {
         this.$alert('您输入的确认密码有误！', '修改失败', {
           confirmButtonText: '确定',
           callback: action => {
