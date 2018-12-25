@@ -52,7 +52,7 @@ class MaoyanSpider(scrapy.Spider):
         movie_herf = re.findall(r'data-com="hrefTo,href:\'(.*)\'\"', url_text)
         url_list = []
         # 这里修改需要爬取的条数
-        for i in movie_herf[:10]:
+        for i in movie_herf[:]:
             iurl = fatherUrl + i
             url_list.append(iurl)
             yield response.follow(iurl, callback=self.detail_parse)
