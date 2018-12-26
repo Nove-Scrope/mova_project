@@ -48,7 +48,7 @@
               </div>
             </el-col>
           </el-row>
-        <div id="pieChart" style="width: 600px;height: 400px;margin-top: 20px;"></div>
+        <div id="pieChart" style="width: 700px;height: 400px;margin-top: 20px;"></div>
         </el-main>
         <el-footer>
           <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -123,6 +123,35 @@ export default {
             color: '#ffffff'
           }
         },
+        legend: {
+          orient: 'vertical',
+          x: 'right',
+          top: '20%',
+          padding: [10, 5],
+          textStyle: {
+            color: '#ffffff'
+          },
+          data: []
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: {
+              show: true
+            },
+            dataView: {
+              show: true,
+              readOnly: false
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            }
+          }
+        },
+        calculable: true,
         series: [{
           name: '票房比例',
           type: 'pie',
@@ -144,6 +173,7 @@ export default {
         console.log(response.data)
         var index
         var tmpList = []
+        var legendList = []
         var length = response.data['y_axis'].length
         for (index = 0; index < length; index++) {
           var tmpObject = {
@@ -153,12 +183,16 @@ export default {
           tmpObject.value = response.data['y_axis'][index]
           tmpObject.name = response.data['x_axis'][index]
           tmpList.push(tmpObject)
+          legendList.push(response.data['x_axis'][index])
         }
         console.log(tmpList)
         pieChart.hideLoading()
         pieChart.setOption({
           title: {
             text: response.data['chart_title']
+          },
+          legend: {
+            data: legendList
           },
           series: {
             data: tmpList

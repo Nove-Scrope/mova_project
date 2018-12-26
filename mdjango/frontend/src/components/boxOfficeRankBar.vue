@@ -36,7 +36,7 @@
             </div>
           </el-col>
         </el-row>
-        <div id="barChart" style="width: 500px;height: 300px;margin-top: 20px;margin-left: 80px;padding-left: 20px"></div>
+        <div id="barChart" style="width: 600px;height: 400px;margin-top: 20px;margin-left: 80px;padding-left: 40px"></div>
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -93,8 +93,23 @@ export default {
           }
         },
         tooltip: {},
+        toolbox: {
+          show: true,
+          feature: {
+            mark: {
+              show: true
+            },
+            dataView: {
+              show: true,
+              readOnly: false
+            },
+            saveAsImage: {
+              show: true
+            }
+          }
+        },
         legend: {
-          data: ['题材'],
+          data: [],
           textStyle: {
             color: '#ffffff'
           }
@@ -129,6 +144,9 @@ export default {
           title: {
             text: response.data['chart_title']
           },
+          legend: {
+            data: response.data['x_axis']
+          },
           xAxis: {
             data: response.data['x_axis']
           },
@@ -151,11 +169,6 @@ export default {
           }
         },
         tooltip: {},
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
         legend: {
           data: ['题材'],
           textStyle: {

@@ -48,7 +48,7 @@
             </div>
           </el-col>
         </el-row>
-        <div id="lineChart" style="width: 600px;height: 400px;margin-top: 50px;"></div>
+        <div id="lineChart" style="width: 700px;height: 400px;margin-top: 50px;"></div>
       </el-main>
       <el-footer>
         <h6 align="center">Copyright © Software Engineering Group X</h6>
@@ -108,13 +108,39 @@ export default {
             color: '#ffffff'
           }
         },
-        tooltip: {},
         legend: {
-          data: ['月份'],
+          orient: 'horizontal',
+          x: 'top',
+          top: '5%',
+          left: '50%',
+          padding: [10, 5],
           textStyle: {
             color: '#ffffff'
+          },
+          data: []
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: {
+              show: true
+            },
+            dataView: {
+              show: true,
+              readOnly: false
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            }
           }
         },
+        calculable: true,
         xAxis: {
           data: [],
           axisLabel: {
@@ -149,6 +175,9 @@ export default {
           title: {
             text: response.data['chart_title']
           },
+          legend: {
+            data: legends
+          },
           xAxis: {
             data: response.data['x_axis']
           },
@@ -181,19 +210,11 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-        legend: {
-          data: []
-        },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: 'category',
