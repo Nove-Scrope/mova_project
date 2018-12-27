@@ -14,7 +14,11 @@
 
 - 环境依赖
 
-   您需要下载npm，并且在命令行中使用 pip install 安装 scrapy、phantomjs、selenium、twisted、reportlab、PIL、pyecharts、sqlite3 函数包
+   1. 本软件基于python 3，请保证您的PC中以有python 3环境
+
+   2. 您需要下载npm，并且在命令行中使用 pip install 安装 scrapy、phantomjs、selenium、twisted、reportlab、PIL、pyecharts、sqlite3 函数包
+  
+   3. 必要时您还需要下载chromedriver并将其保存至您的PC的python路径下
    
 - 使用步骤
 
