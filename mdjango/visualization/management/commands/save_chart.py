@@ -1,3 +1,7 @@
+# save_chart.py -- 一个文件复制脚本
+# 原先采用的数据报表方案是前端在命令行中执行该脚本，将生成的图表文件复制到指定文件夹中
+# 后面采用将图表写入pdf文件的方法
+# 原方案被废弃，脚本也失去了意义
 from django.core.management.base import BaseCommand
 import shutil
 import os
