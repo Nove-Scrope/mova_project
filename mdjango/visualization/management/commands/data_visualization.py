@@ -1,3 +1,7 @@
+# data_visualization.py -- 一个电影数据可视化脚本
+# 原先采用的数据可视化方案是前端在命令行中执行该脚本，完成数据的可视化
+# 后面发现Vue.js无法调用命令行执行python脚本
+# 原方案被废弃，脚本也失去了意义
 import sys
 import getopt
 from visualization.models import MovieData
